@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.1)
 
-set (CMAKE_C_STANDARD 11)
-set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
 
+# 默认不生成zero_check工程
+set(CMAKE_SUPPRESS_REGENERATION ON)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
+set_property(GLOBAL PROPERTY CMAKE_SKIP_PACKAGE_ALL_DEPENDENCIY ON)
 
 project(GameEngine)
 
-include_directories("${PROJECT_SOURCE_DIR}/Framework/Common")
-include_directories("${PROJECT_SOURCE_DIR}/Framework/Interface")
-
-add_subdirectory(Framework)
-add_subdirectory(Empty)
+add_subdirectory(client)
