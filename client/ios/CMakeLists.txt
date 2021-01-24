@@ -22,22 +22,28 @@ set_source_files_properties(
 
 # 设置Info.plist
 set_target_properties(
-    client
-    PROPERTIES
-    MACOSX_BUNDLE_INFO_PLIST
-	${CMAKE_CURRENT_LIST_DIR}/Info.plist
+	client
+	PROPERTIES
+	MACOSX_BUNDLE_INFO_PLIST
+	${CMAKE_CURRENT_LIST_DIR}/Info.plist.in
+)
+# 设置bundle identifier
+set_target_properties(
+	client
+	PROPERTIES
+	XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER
+	"com.netease.client"
 )
 
 # 设置应用使用图标
 set_target_properties(
 	client
 	PROPERTIES
-    XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME 
+	XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME 
 	"AppIcon"
 )
 
 
-set(CMAKE_XCODE_ATTRIBUTE_DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER "com.netease1.client")
 # 添加Framework
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework UIKit")
 # 设置处理器架构列表

@@ -5,10 +5,10 @@
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=cmake ../../ -G  "Xcode"
+command=rm -rf build/mac && cmake -H. -B build/mac -G  "Xcode"
 
 # working directory, can change to $(VIM_ROOT) for project root
-cwd=$(VIM_ROOT)/build/mac
+cwd=$(VIM_ROOT)
 
 # output mode, can be one of quickfix and terminal
 # - quickfix: output to quickfix window
@@ -27,10 +27,10 @@ save=1
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=open GameEngine.xcodeproj
+command=open build/mac/GameEngine.xcodeproj
 
 # working directory, can change to $(VIM_ROOT) for project root
-cwd=$(VIM_ROOT)/build/mac
+cwd=$(VIM_ROOT)
 
 # output mode, can be one of quickfix and terminal
 # - quickfix: output to quickfix window
@@ -49,10 +49,10 @@ save=1
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=cmake ../../ -D CMAKE_SYSTEM_NAME=iOS -G  "Xcode"
+command=rm -rf build/ios && cmake -H. -B build/ios -D CMAKE_SYSTEM_NAME=iOS -G  "Xcode"
 
 # working directory, can change to $(VIM_ROOT) for project root
-cwd=$(VIM_ROOT)/build/ios
+cwd=$(VIM_ROOT)
 
 # output mode, can be one of quickfix and terminal
 # - quickfix: output to quickfix window
@@ -71,10 +71,10 @@ save=1
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=open GameEngine.xcodeproj
+command=open build/ios/GameEngine.xcodeproj
 
 # working directory, can change to $(VIM_ROOT) for project root
-cwd=$(VIM_ROOT)/build/ios
+cwd=$(VIM_ROOT)
 
 # output mode, can be one of quickfix and terminal
 # - quickfix: output to quickfix window
