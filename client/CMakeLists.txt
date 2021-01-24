@@ -1,1 +1,5 @@
-add_subdirectory(mac)
+if(IOS)
+	add_subdirectory(ios)
+else()
+	add_subdirectory(mac)
+endif()
