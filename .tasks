@@ -49,7 +49,7 @@ save=1
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=rm -rf build/ios && cmake -H. -B build/ios -D CMAKE_SYSTEM_NAME=iOS -G  "Xcode"
+command=rm -rf build/ios && cmake -H. -B build/ios -D PLATFORM_IOS:BOOL=ON -G  "Xcode"
 
 # working directory, can change to $(VIM_ROOT) for project root
 cwd=$(VIM_ROOT)

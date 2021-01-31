@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 11)
+# 导出与平台无关的通用设置
+message("开始导入平台无关通用配置")
+include(cmake/common.cmake)
+# 导入平台相关设置
+message("开始导入平台相关配置")
+include(cmake/platform.cmake)
 
-# 默认不生成zero_check工程
-set(CMAKE_SUPPRESS_REGENERATION ON)
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-set_property(GLOBAL PROPERTY CMAKE_SKIP_INSTALL_ALL_DEPENDENCY ON)
-set_property(GLOBAL PROPERTY CMAKE_SKIP_PACKAGE_ALL_DEPENDENCIY ON)
-
+# 设置工程名称
 project(GameEngine)
 
+# 以下添加子工程
 add_subdirectory(client)

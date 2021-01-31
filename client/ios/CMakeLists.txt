@@ -1,3 +1,4 @@
+# 资源
 set(RESOURCES Assets.xcassets Base.lproj/LaunchScreen.storyboard Base.lproj/Main.storyboard)
 
 # 添加源码文件编译可执行文件
@@ -43,10 +44,7 @@ set_target_properties(
 	"AppIcon"
 )
 
-
 # 添加Framework
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework UIKit")
 # 设置处理器架构列表
 set(CMAKE_OSX_ARCHITECTURES $(ARCHS_STANDARD))
-# 设置ios版本
-set(CMAKE_OSX_DEPLOYMENT_TARGET 9.3)
