@@ -4,6 +4,10 @@
 #include "framework.h"
 #include "client.h"
 
+#include <gl/GL.h>
+#include <gl/GLU.h>
+
+
 #define MAX_LOADSTRING 100
 
 // 全局变量:
@@ -16,6 +20,45 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+
+
+
+HDC hdc;
+
+BOOL InitOpenGLEnv(HWND hWnd) {
+    hdc = GetDC(hWnd);
+    PIXELFORMATDESCRIPTOR pfd;
+    memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
+    pfd.nVersion = 1;
+    pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+    pfd.cColorBits = 32;
+    pfd.cDepthBits = 24;
+    pfd.cStencilBits = 8;
+    pfd.iPixelType = PFD_TYPE_RGBA;
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+
+    int pixelFormat = ChoosePixelFormat(hdc, &pfd);
+    SetPixelFormat(hdc, pixelFormat, &pfd);
+    HGLRC hrc = wglCreateContext(hdc);
+    wglMakeCurrent(hdc, hrc);
+
+    return true;
+}
+
+
+void InitScene() {
+    glMatrixMode(GL_PROJECTION);
+    gluPerspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}
+
+
+void DrawScene() {
+    glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -50,6 +93,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        DrawScene();
+        SwapBuffers(hdc);
     }
 
     return (int) msg.wParam;
@@ -83,6 +129,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
+
 //
 //   函数: InitInstance(HINSTANCE, int)
 //
@@ -105,11 +152,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
       return FALSE;
    }
 
+   InitOpenGLEnv(hWnd);
+
+   InitScene();
+   
+
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
 
    return TRUE;
 }
+
+
 
 //
 //  函数: WndProc(HWND, UINT, WPARAM, LPARAM)
@@ -178,3 +232,6 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return (INT_PTR)FALSE;
 }
+
+
+
