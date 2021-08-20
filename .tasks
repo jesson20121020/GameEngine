@@ -94,7 +94,7 @@ save=1
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=rmdir /s/q build\windows && cmake -H. -B build/windows -G  "Visual Studio 16 2019"
+command=rm -rf build/windows && cmake.exe -H. -B build/windows -G  "Visual Studio 16 2019"
 # working directory, can change to $(VIM_ROOT) for project root
 cwd=$(VIM_ROOT)
 
@@ -110,14 +110,15 @@ errorformat=%f:%l:%m
 # save file before execute
 save=1
 
+
 # define a new task named "file-build"
-[vs-windows]
+[build-windows]
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=echo "xxx"
+command=cmd.exe /c "F:/Programe/VisualStudio/vs2019/Common7/Tools/VsMSBuildCmd.bat && msbuild.exe GameEngine.sln "
 # working directory, can change to $(VIM_ROOT) for project root
-cwd=$(VIM_ROOT)
+cwd=$(VIM_ROOT)/build/windows
 
 # output mode, can be one of quickfix and terminal
 # - quickfix: output to quickfix window
@@ -132,3 +133,23 @@ errorformat=%f:%l:%m
 save=1
 
 
+# define a new task named "file-build"
+[run-windows]
+
+# shell command, use quotation for filenames containing spaces
+# check ":AsyncTaskMacro" to see available macros
+command=cmd.exe /c start "client\windows\Debug\client.exe"
+# working directory, can change to $(VIM_ROOT) for project root
+cwd=$(VIM_ROOT)/build/windows
+
+# output mode, can be one of quickfix and terminal
+# - quickfix: output to quickfix window
+# - terminal: run the command in the internal terminal
+output=quickfix
+
+# this is for output=quickfix only
+# if it is omitted, vim's current errorformat will be used.
+errorformat=%f:%l:%m
+
+# save file before execute
+save=1
