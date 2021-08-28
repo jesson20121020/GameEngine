@@ -33,7 +33,7 @@ set_target_properties(client PROPERTIES
 	# info.plist
     MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/Info.plist.in
 	# name
-	XCODE_ATTRIBUTE_PRODUCT_NAME "frxy"
+	XCODE_ATTRIBUTE_PRODUCT_NAME "game"
 	# version
 	XCODE_ATTRIBUTE_PRODUCT_VERSION "1.0.1"
 	# build
