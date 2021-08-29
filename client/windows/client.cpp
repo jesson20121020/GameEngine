@@ -3,10 +3,7 @@
 
 #include "framework.h"
 #include "client.h"
-
-#include <gl/GL.h>
-#include <gl/GLU.h>
-
+#include "Scene.h"
 
 #define MAX_LOADSTRING 100
 
@@ -46,19 +43,6 @@ BOOL InitOpenGLEnv(HWND hWnd) {
 }
 
 
-void InitScene() {
-    glMatrixMode(GL_PROJECTION);
-    gluPerspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
-
-void DrawScene() {
-    glClearColor(0.5f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -94,7 +78,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
 
-        DrawScene();
+        Renderer();
         SwapBuffers(hdc);
     }
 
@@ -154,8 +138,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    InitOpenGLEnv(hWnd);
 
-   InitScene();
-   
+   Init();
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
