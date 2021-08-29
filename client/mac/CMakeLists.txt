@@ -14,6 +14,9 @@ add_executable(client MACOSX_BUNDLE
 	${RESOURCES}
 )
 
+
+include_directories(${CMAKE_SOURCE_DIR}/dependencies/glew-2.2.0/include)
+
 # 设置需要放到Resources目录下的资源
 set_source_files_properties(
 	${RESOURCES}

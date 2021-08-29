@@ -8,9 +8,7 @@
 #ifndef scene_hpp
 #define scene_hpp
 
-#include <stdio.h>
-
-void InitScene();
-void DrawScene();
+void Init(float width, float height);
+void Renderer();
 
 #endif /* scene_hpp */
