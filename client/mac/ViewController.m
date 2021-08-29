@@ -6,12 +6,14 @@
 //
 
 #import "ViewController.h"
+#include "scene.hpp"
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
+    InitScene();
     // Do any additional setup after loading the view.
 }
 

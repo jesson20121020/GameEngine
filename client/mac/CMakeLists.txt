@@ -9,6 +9,8 @@ add_executable(client MACOSX_BUNDLE
 	ViewController.h
 	ViewController.m
 	client.entitlements
+	scene.hpp
+	scene.cpp
 	${RESOURCES}
 )
 
