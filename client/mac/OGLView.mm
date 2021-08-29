@@ -6,7 +6,7 @@
 //
 
 #import "OGLView.h"
-#include "Scene.hpp"
+#include "Scene.h"
 
 
 static OGLView* sOGLView;

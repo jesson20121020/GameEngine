@@ -5,7 +5,7 @@
 //  Created by jesson on 2021/8/28.
 //
 
-#include "Scene.hpp"
+#include "Scene.h"
 #include <OpenGL/OpenGL.h>
 #include <OpenGL//gl.h>
 #include <OpenGl/glu.h>
