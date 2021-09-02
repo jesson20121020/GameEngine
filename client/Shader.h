@@ -1,19 +1,16 @@
 #ifndef SHADER_H
 #define SHADER_H
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 
-#include <OpenGL/OpenGL.h>
-#include <OpenGL/glu.h>
-#include <OpenGl/gl.h>
-
 class Shader {
 
 public:
   unsigned int ID;
-  Shader(const GLchar *vertexPath, const GLchar *fragmentPath);
+  Shader(const char *vertexPath, const char *fragmentPath);
 
   void use();
 

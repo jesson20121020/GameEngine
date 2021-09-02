@@ -138,7 +138,7 @@ save=1
 
 # shell command, use quotation for filenames containing spaces
 # check ":AsyncTaskMacro" to see available macros
-command=cmd.exe /c start "client\windows\Debug\client.exe"
+command=cmd.exe /c start "bin\Debug\client.exe"
 # working directory, can change to $(VIM_ROOT) for project root
 cwd=$(VIM_ROOT)/build/windows
 
@@ -184,6 +184,27 @@ save=1
 command=open client/mac/Debug/game.app
 # working directory, can change to $(VIM_ROOT) for project root
 cwd=$(VIM_ROOT)/build/mac
+
+# output mode, can be one of quickfix and terminal
+# - quickfix: output to quickfix window
+# - terminal: run the command in the internal terminal
+output=quickfix
+
+# this is for output=quickfix only
+# if it is omitted, vim's current errorformat will be used.
+errorformat=%f:%l:%m
+
+# save file before execute
+save=1
+
+# define a new task named "file-build"
+[vs2019]
+
+# shell command, use quotation for filenames containing spaces
+# check ":AsyncTaskMacro" to see available macros
+command=cmd.exe /c "start F:\Programe\VisualStudio\vs2019\Common7\IDE\devenv.exe GameEngine.sln"
+# working directory, can change to $(VIM_ROOT) for project root
+cwd=$(VIM_ROOT)/build/windows
 
 # output mode, can be one of quickfix and terminal
 # - quickfix: output to quickfix window

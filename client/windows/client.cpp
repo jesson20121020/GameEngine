@@ -3,7 +3,8 @@
 
 #include "framework.h"
 #include "client.h"
-#include "Scene.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
 
 #define MAX_LOADSTRING 100
 
@@ -78,7 +79,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
 
-        Renderer();
+        //Renderer();
         SwapBuffers(hdc);
     }
 
@@ -138,7 +139,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    InitOpenGLEnv(hWnd);
 
-   Init();
+   //Init(1334, 750);
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);

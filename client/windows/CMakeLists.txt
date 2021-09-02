@@ -9,9 +9,13 @@ add_executable(
   client.rc
   client.ico
   small.ico
-  Scene.h
-  Scene.cpp
+  ../Scene.h
+  ../Scene.cpp
+  ../Shader.h
+  ../Shader.cpp
   )
+
+include_directories(../)
 
 message("${OPENGL_LIBRARIES}")
 

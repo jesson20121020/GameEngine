@@ -12,8 +12,10 @@ add_executable(
   OGLView.h
   OGLView.mm
   client.entitlements
-  Scene.h
-  Scene.cpp
+  ../Scene.h
+  ../Scene.cpp
+  ../Shader.h
+  ../Shader.cpp
   ${RESOURCES})
 
 # 设置需要放到Resources目录下的资源
@@ -42,4 +44,5 @@ set_target_properties(
 # 添加Framework
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework AppKit")
 
+# 添加链接库
 target_link_libraries(client "-framework OpenGL")

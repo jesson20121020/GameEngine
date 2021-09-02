@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "glheader.h"
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath) {
   // 1. 从文件路径读取顶点、片段着色器代码
@@ -39,6 +40,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
   char infoLog[512];
 
   // 顶点着色器
+
   vertex = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertex, 1, &vShaderCode, NULL);
   glCompileShader(vertex);
