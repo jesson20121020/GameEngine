@@ -24,6 +24,8 @@ elseif(PLATFORM_WINDOWS)
        ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/lib/Release/x64)
   list(APPEND THIRD_DEPEND_BINS
        ${PROJECT_SOURCE_DIR}/dependencies/glew-2.1.0/bin/Release/x64/)
+  list(APPEND THIRD_DEPEND_BINS
+       ${PROJECT_SOURCE_DIR}/client/res)
   set(BINARY_OUPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE})
 elseif(PLATFORM_OSX)
   set(PLATFORM MACOSX_BUNDLE)
@@ -59,7 +61,7 @@ include_directories(${INCLUDE_DIRS})
 link_directories(${THIRD_DEPEND_DIRS})
 
 source_group("Resources" FILES ${RESOURCE_FILES})
-add_executable(${TARGET} ${PLATFORM} ${HEADER_FILES} ${SOURCE_FILES})
+add_executable(${TARGET} ${PLATFORM} ${HEADER_FILES} ${SOURCE_FILES} ${RESOURCE_FILES})
 target_link_libraries(${TARGET} ${THIRD_DEPENDS} "-framework OpenGL")
 add_custom_command(
   TARGET ${TARGET}
