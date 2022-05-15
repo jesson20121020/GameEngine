@@ -8,6 +8,8 @@ set(INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/include)
 set(THIRD_DEPEND_DIRS)
 set(THIRD_DEPEND_BINS)
 set(BINARY_OUPUT_DIR)
+set(FRAMEWORK_FILES)
+
 if(PLATFORM_IOS)
   message("todo")
 
@@ -51,9 +53,16 @@ elseif(PLATFORM_OSX)
       ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/game.app/Contents/MacOS
   )
 
-  # 设置需要放到Resources目录下的资源
-  set_source_files_properties(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION
+	# 设置需要放到Resources目录下的资源
+	set_source_files_properties(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION
                                                       Resources)
+
+	message(${CMAKE_CURRENT_BINARY_DIR})
+	file(GLOB FRAMEWORK_FILES ${PROJECT_SOURCE_DIR}/dependencies/glew-2.2.0/lib/mac/*.dylib)
+	foreach(framework ${FRAMEWORK_FILES})
+		set_source_files_properties(${framework} PROPERTIES MACOSX_PACKAGE_LOCATION Frameworks)
+		set_source_files_properties(${framework} PROPERTIES XCODE_FILE_ATTRIBUTES "CodeSignOnCopy")
+	endforeach()
 
 endif()
 
@@ -61,13 +70,27 @@ include_directories(${INCLUDE_DIRS})
 link_directories(${THIRD_DEPEND_DIRS})
 
 source_group("Resources" FILES ${RESOURCE_FILES})
-add_executable(${TARGET} ${PLATFORM} ${HEADER_FILES} ${SOURCE_FILES} ${RESOURCE_FILES})
+source_group("Frameworks" FILES ${FRAMEWORK_FILES})
+add_executable(${TARGET} ${PLATFORM} ${HEADER_FILES} ${SOURCE_FILES} ${RESOURCE_FILES} ${FRAMEWORK_FILES})
+if (FRAMEWORK_FILES)
+	set_target_properties(${TARGET} PROPERTIES XCODE_ATTRIBUTE_LD_RUNPATH_SEARCH_PATHS "@executable_path/Frameworks")
+endif()
 target_link_libraries(${TARGET} ${THIRD_DEPENDS} "-framework OpenGL")
-add_custom_command(
-  TARGET ${TARGET}
-  POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${THIRD_DEPEND_BINS}
-          ${BINARY_OUPUT_DIR})
+
+if(PLATFORM_WINDOWS)
+	add_custom_command(
+	  TARGET ${TARGET}
+	  POST_BUILD
+	  COMMAND ${CMAKE_COMMAND} -E copy_directory ${THIRD_DEPEND_BINS}
+	          ${BINARY_OUPUT_DIR})
+elseif(PLATFORM_OSX)
+	# NOTE: 通过install_name_tool解决dylib not found的问题
+	add_custom_command(
+	  TARGET ${TARGET}
+	  POST_BUILD
+	  COMMAND install_name_tool -change "/usr/local/lib/libGLEW.2.2.0.dylib" "@executable_path/../Frameworks/libGLEW.2.2.0.dylib" "$BUILT_PRODUCTS_DIR/$EXECUTABLE_PATH")
+endif()
+
 
 if(PLATFORM_OSX)
   # 设置应用使用图标
