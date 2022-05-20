@@ -8,6 +8,10 @@
 #include "Scene.h"
 #include "Shader.h"
 #include "glheader.h"
+#include "backends/imgui_impl_opengl3.h"
+#ifdef _WINDOWS
+#include "backends/imgui_impl_win32.h"
+#endif
 
 // https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/
 void Test_Init_DrawTriangle() {
@@ -87,6 +91,7 @@ void Test_TriangleWithIndexs() {
 
 void Init(float width, float height) {
   glewInit();
+  ImGui_ImplOpenGL3_Init("#version 420");
   glMatrixMode(GL_PROJECTION);
   gluPerspective(50.0f, width / height, 0.1f, 1000.0f);
   glMatrixMode(GL_MODELVIEW);
@@ -97,7 +102,28 @@ void Renderer() {
   glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
 
-  // Test_Init_DrawTriangle();
+  ImGui_ImplOpenGL3_NewFrame();
+#ifdef _WINDOWS
+  ImGui_ImplWin32_NewFrame();
+#endif
+
+  if (ImGui::GetCurrentContext())
+  {
+      ImGui::NewFrame();
+
+      ImGui::ShowDemoWindow();
+
+      ImGui::Render();
+  }
+
+  //Test_Init_DrawTriangle();
   Test_TriangleWithIndexs();
   glFlush();
+
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void Destroy()
+{
+    ImGui_ImplOpenGL3_Shutdown();
 }

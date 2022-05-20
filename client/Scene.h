@@ -10,5 +10,6 @@
 
 void Init(float width, float height);
 void Renderer();
+void Destroy();
 
 #endif /* scene_hpp */
