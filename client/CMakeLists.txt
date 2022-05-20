@@ -1,7 +1,7 @@
 set(TARGET client)
 set(PLATFORM "")
 set(HEADER_FILES Scene.h Shader.h glheader.h)
-set(SOURCE_FILES Scene.cpp Shader.cpp)
+set(SOURCE_FILES Scene.cpp Shader.cpp stb_image.cpp)
 set(RESOURCE_FILES)
 set(THIRD_DEPENDS)
 set(INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/include)

@@ -41,10 +41,48 @@ void Test_Init_DrawTriangle() {
   // VBOs) when it's not directly necessary.
   glBindVertexArray(0);
 
-  Shader shader("G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.vs", "G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.ps");
+  Shader shader("G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.vs",
+                "G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.ps");
   shader.use();
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLES, 0, 3);
+}
+
+// 四边形
+void Test_TriangleWithIndexs() {
+  float vertices[] = {
+      0.5f,  0.5f,  0.0f, 0.5f,  -0.5f, 0.0f,
+      -0.5f, -0.5f, 0.0f, -0.5f, 0.5f,  0.0f,
+  };
+
+  int indexs[] = {0, 1, 3, 1, 2, 3};
+  unsigned int VBO, VAO, EBO;
+
+  glGenVertexArrays(1, &VAO);
+  glGenBuffers(1, &VBO);
+  glGenBuffers(1, &EBO);
+  glBindVertexArray(VAO);
+
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexs), indexs, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  glEnableVertexAttribArray(0);
+
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  glBindVertexArray(0);
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+  Shader shader("G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.vs",
+                "G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.ps");
+  shader.use();
+  glBindVertexArray(VAO);
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 void Init(float width, float height) {
@@ -58,7 +96,8 @@ void Init(float width, float height) {
 void Renderer() {
   glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT);
-  
-  Test_Init_DrawTriangle();
+
+  // Test_Init_DrawTriangle();
+  Test_TriangleWithIndexs();
   glFlush();
 }
