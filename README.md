@@ -1,3 +1,7 @@
+## 0. 先更新
+```bash
+    git submodule update --init --recursive
+```
 ## 1. Windows平台
 ```bash
     # 生成vs工程 
