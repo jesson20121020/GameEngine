@@ -12,6 +12,8 @@
 #include "stb_image.h"
 #ifdef _WINDOWS
 #include "backends/imgui_impl_win32.h"
+#else
+
 #endif
 
 // https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/
@@ -46,8 +48,8 @@ void Test_Init_DrawTriangle() {
   // VBOs) when it's not directly necessary.
   glBindVertexArray(0);
 
-  Shader shader("G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.vs",
-                "G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.ps");
+  Shader shader("/Users/jesson/Documents/GameEngine/client/res/test001.vs",
+                "/Users/jesson/Documents/GameEngine/client/res/test001.ps");
   shader.use();
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -136,7 +138,7 @@ void Test_LoadTexture() {
 
   int width, height, nrChannel;
   unsigned char *data =
-      stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test.jpg", &width,
+      stbi_load("/Users/jesson/Documents/GameEngine/client/res/test.jpg", &width,
                 &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
@@ -147,8 +149,8 @@ void Test_LoadTexture() {
   }
   stbi_image_free(data);
 
-  Shader shader("H:\\GitLab\\GameEngine\\client\\res\\test002.vs",
-                "H:\\GitLab\\GameEngine\\client\\res\\test002.ps");
+    Shader shader("/Users/jesson/Documents/GameEngine/client/res/test002.vs",
+                  "/Users/jesson/Documents/GameEngine/client/res/test002.ps");
   shader.use();
   glActiveTexture(GL_TEXTURE0); // 在绑定纹理之前先激活纹理单元
   glBindTexture(GL_TEXTURE_2D, texture);
@@ -239,8 +241,8 @@ void Test() {
 }
 
 void Init(float width, float height) {
+    //glewExperimental = GL_TRUE;
   glewInit();
-  ImGui_ImplOpenGL3_Init("#version 420");
   glMatrixMode(GL_PROJECTION);
   gluPerspective(50.0f, width / height, 0.1f, 1000.0f);
   glMatrixMode(GL_MODELVIEW);
@@ -248,29 +250,8 @@ void Init(float width, float height) {
 }
 
 void Renderer() {
-  glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
-
-  ImGui_ImplOpenGL3_NewFrame();
-#ifdef _WINDOWS
-  ImGui_ImplWin32_NewFrame();
-#endif
-
-  if (ImGui::GetCurrentContext()) {
-    ImGui::NewFrame();
-
-    ImGui::ShowDemoWindow();
-
-    ImGui::Render();
-  }
-
-  // Test_Init_DrawTriangle();
-  // Test_TriangleWithIndexs();
-  Test_LoadTexture();
-  // Test();
-  glFlush();
-
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    
+    Test_LoadTexture();
 }
 
-void Destroy() { ImGui_ImplOpenGL3_Shutdown(); }
+void Destroy() { }

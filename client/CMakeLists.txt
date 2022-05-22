@@ -9,7 +9,8 @@ set(SOURCE_FILES
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_draw.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_tables.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_widgets.cpp
-    ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_demo.cpp)
+    ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_demo.cpp
+	${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_opengl3.cpp)
 set(RESOURCE_FILES)
 set(THIRD_DEPENDS)
 set(INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/include
@@ -29,7 +30,6 @@ elseif(PLATFORM_WINDOWS)
        windows/Resource.h windows/targetver.h)
   list(APPEND SOURCE_FILES windows/client.cpp)
   list(APPEND SOURCE_FILES
-       ${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_opengl3.cpp
        ${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_win32.cpp)
   list(APPEND RESOURCE_FILES windows/client.rc windows/client.ico
        windows/small.ico)
@@ -53,7 +53,8 @@ elseif(PLATFORM_OSX)
     mac/AppDelegate.mm
     mac/OGLView.mm
     mac/OGLMainWindow.mm
-    mac/client.entitlements)
+    mac/client.entitlements
+	${PROJECT_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_osx.mm)
   list(APPEND RESOURCE_FILES mac/Assets.xcassets)
   list(APPEND THIRD_DEPENDS libGLEW.a)
   list(APPEND THIRD_DEPEND_DIRS
@@ -101,7 +102,7 @@ if(PLATFORM_WINDOWS)
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${THIRD_DEPEND_BINS}
             ${BINARY_OUPUT_DIR})
 elseif(PLATFORM_OSX)
-  target_link_libraries(${TARGET} ${THIRD_DEPENDS} "-framework OpenGL")
+	target_link_libraries(${TARGET} ${THIRD_DEPENDS} "-framework OpenGL -framework GameController")
   # NOTE: 通过install_name_tool解决dylib not found的问题
   add_custom_command(
     TARGET ${TARGET}
