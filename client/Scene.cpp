@@ -16,6 +16,12 @@
 
 #endif
 
+#include <vector>
+
+#include "Model.h"
+
+std::vector<Model*> modelCache;
+
 // https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/
 void Test_Init_DrawTriangle() {
   float vertices[] = {
@@ -138,7 +144,7 @@ void Test_LoadTexture() {
 
   int width, height, nrChannel;
   unsigned char *data =
-      stbi_load("/Users/jesson/Documents/GameEngine/client/res/test.jpg", &width,
+      stbi_load("/Users/jesson/Documents/GameEngine/client/res/test2.jpg", &width,
                 &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
@@ -149,11 +155,39 @@ void Test_LoadTexture() {
   }
   stbi_image_free(data);
 
+  //texture2 
+  unsigned int texture2;
+  glGenTextures(1, &texture2);
+  glBindTexture(GL_TEXTURE_2D, texture2);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);;
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);;
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  data =
+      stbi_load("/Users/jesson/Documents/GameEngine/client/res/test.jpg", &width,
+                &height, &nrChannel, 0);
     Shader shader("/Users/jesson/Documents/GameEngine/client/res/test002.vs",
                   "/Users/jesson/Documents/GameEngine/client/res/test002.ps");
+  if (data) {
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+                 GL_UNSIGNED_BYTE, data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+  } else {
+    std::cout << "Failed to load texture" << std::endl;
+  }
+  stbi_image_free(data);
+
   shader.use();
+
+  shader.setInt("texture1", 0);
+  shader.setInt("texture2", 1);
+
+
   glActiveTexture(GL_TEXTURE0); // 在绑定纹理之前先激活纹理单元
   glBindTexture(GL_TEXTURE_2D, texture);
+  glActiveTexture(GL_TEXTURE1);
+  glBindTexture(GL_TEXTURE_2D, texture2);
+  shader.use();
   glBindVertexArray(VAO);
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
@@ -230,6 +264,11 @@ void Test() {
   }
   stbi_image_free(data);
 
+
+
+
+
+
   // bind Texture
   glBindTexture(GL_TEXTURE_2D, texture);
 
@@ -247,11 +286,17 @@ void Init(float width, float height) {
   gluPerspective(50.0f, width / height, 0.1f, 1000.0f);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  auto model = new Model();
+  modelCache.push_back(model);
 }
 
 void Renderer() {
-    
-    Test_LoadTexture();
+    // Test_Init_DrawTriangle();
+    // Test_LoadTexture();
+	for(auto iter = modelCache.begin(); iter != modelCache.end(); iter++)
+	{
+		(*iter)->render();
+	}
 }
 
 void Destroy() { }

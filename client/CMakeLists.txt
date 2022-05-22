@@ -2,6 +2,7 @@ set(TARGET client)
 set(PLATFORM "")
 set(HEADER_FILES Scene.h Shader.h glheader.h)
 set(SOURCE_FILES
+	Model.cpp
     Scene.cpp
     Shader.cpp
     stb_image.cpp
