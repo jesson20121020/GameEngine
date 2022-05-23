@@ -7,6 +7,7 @@ public:
 	void init();
 	inline bool hasInit(){ return _hasInit; }
 	void render();
+	void renderImGui();
 	void draw();
 	void destroy();
 	Shader* getShader() {return _shader; }

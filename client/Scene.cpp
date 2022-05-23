@@ -7,17 +7,9 @@
 
 #include "Scene.h"
 #include "Shader.h"
-#include "backends/imgui_impl_opengl3.h"
 #include "glheader.h"
 #include "stb_image.h"
-#ifdef _WINDOWS
-#include "backends/imgui_impl_win32.h"
-#else
-
-#endif
-
 #include <vector>
-
 #include "Model.h"
 
 std::vector<Model*> modelCache;
@@ -54,8 +46,8 @@ void Test_Init_DrawTriangle() {
   // VBOs) when it's not directly necessary.
   glBindVertexArray(0);
 
-  Shader shader("/Users/jesson/Documents/GameEngine/client/res/test001.vs",
-                "/Users/jesson/Documents/GameEngine/client/res/test001.ps");
+  Shader shader("G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.vs",
+      "G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.ps");
   shader.use();
   glBindVertexArray(VAO);
   glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -144,8 +136,8 @@ void Test_LoadTexture() {
 
   int width, height, nrChannel;
   unsigned char *data =
-      stbi_load("/Users/jesson/Documents/GameEngine/client/res/test2.jpg", &width,
-                &height, &nrChannel, 0);
+      stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test.jpg", &width,
+          &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, data);
@@ -164,10 +156,10 @@ void Test_LoadTexture() {
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   data =
-      stbi_load("/Users/jesson/Documents/GameEngine/client/res/test.jpg", &width,
-                &height, &nrChannel, 0);
-    Shader shader("/Users/jesson/Documents/GameEngine/client/res/test002.vs",
-                  "/Users/jesson/Documents/GameEngine/client/res/test002.ps");
+      stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test2.jpg", &width,
+          &height, &nrChannel, 0);
+  Shader shader("H:\\GitLab\\GameEngine\\client\\res\\test002.vs",
+      "H:\\GitLab\\GameEngine\\client\\res\\test002.ps");
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, data);
@@ -291,12 +283,22 @@ void Init(float width, float height) {
 }
 
 void Renderer() {
-    // Test_Init_DrawTriangle();
-    // Test_LoadTexture();
+    //Test_Init_DrawTriangle();
+    //Test_LoadTexture();
+    //Test();
 	for(auto iter = modelCache.begin(); iter != modelCache.end(); iter++)
 	{
 		(*iter)->render();
 	}
+}
+
+
+void RenderImGui()
+{
+    for (auto iter = modelCache.begin(); iter != modelCache.end(); iter++)
+    {
+        (*iter)->renderImGui();
+    }
 }
 
 void Destroy() { }

@@ -3,9 +3,12 @@
 
 #include "../Scene.h"
 #include "backends/imgui_impl_win32.h"
+#include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
 #include "client.h"
 #include "framework.h"
+#include "../glheader.h"
+#include <iostream>
 
 #define MAX_LOADSTRING 100
 
@@ -47,6 +50,59 @@ BOOL InitOpenGLEnv(HWND hWnd) {
   return true;
 }
 
+
+void onBeginDraw()
+{
+	glClearColor(0.1f, 0.4f, 0.7f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+}
+
+void drawImGui()
+{
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    if (ImGui::GetCurrentContext()) {
+      ImGui::NewFrame();
+
+      RenderImGui();
+      // ImGui::ShowDemoWindow();
+
+      ImGui::Render();
+    }
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void initImGui(HWND hWnd)
+{
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO();
+
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplWin32_EnableDpiAwareness();
+    ImGui::StyleColorsDark();
+    ImGui_ImplOpenGL3_Init("#version 420");
+}
+
+void destroyImGui()
+{
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
+}
+
+void onDraw()
+{
+	Renderer();
+    drawImGui();
+}
+
+void onPostDraw()
+{
+	glFlush();
+}
+
+
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR lpCmdLine,
                       _In_ int nCmdShow) {
@@ -65,11 +121,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     return FALSE;
   }
 
- 
-
-  ImGui::StyleColorsDark();
-
-
   HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
   MSG msg;
@@ -81,13 +132,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       DispatchMessage(&msg);
     }
 
-    Renderer();
+	onBeginDraw();
+	onDraw();
+	onPostDraw();
     SwapBuffers(hdc);
   }
 
-  //Destroy();
-  ImGui_ImplWin32_Shutdown();
-  ImGui::DestroyContext();
+  Destroy();
+  destroyImGui();
   return (int)msg.wParam;
 }
 
@@ -139,24 +191,18 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 
   InitOpenGLEnv(hWnd);
 
+  auto x = glGetString(GL_VERSION);
+  std::cout << x;
+
   WINDOWINFO info;
   RECT rect;
   ::GetWindowRect(hWnd, &rect);
 
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  [[maybe_unused]] ImGuiIO& io = ImGui::GetIO();
-
-  ImGui_ImplWin32_Init(hWnd);
-  ImGui_ImplWin32_EnableDpiAwareness();
-  ImGui::StyleColorsDark();
-
+  initImGui(hWnd);
   Init(rect.right - rect.left, rect.bottom - rect.top);
 
   ShowWindow(hWnd, nCmdShow);
   UpdateWindow(hWnd);
-
-
 
   return TRUE;
 }
