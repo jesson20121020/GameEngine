@@ -12,10 +12,10 @@ void Model::init()
 {
     float vertices[] = {
         // positions          // colors           // texture coords
-        0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
-        0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
+        0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 3.0f, 2.0f, // top right
+        0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 3.0f, 0.0f, // bottom right
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
-        -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f  // top left
+        -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 2.0f  // top left
     };
     unsigned int indices[] = {
         0, 1, 3, // first triangle
@@ -128,10 +128,12 @@ void Model::init()
     _shader->use();
     _shader->setInt("texture1", 0);
     _shader->setInt("texture2", 1);
+    _shader->setFloat("factor", 0.3);
 }
 
 void Model::draw()
 {
+ 
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
@@ -148,9 +150,7 @@ void Model::render()
 
 void Model::renderImGui()
 {
-    float factor = 0.2f;
-    ImGui::SliderFloat("MixFactor", &factor, 0.0f, 1.0f, "%.2f", 0);
-    _shader->setFloat("factor", factor);
+    _shader->drawImGui();
 }
 
 
