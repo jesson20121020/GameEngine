@@ -3,6 +3,9 @@ set(PLATFORM "")
 set(HEADER_FILES Scene.h Shader.h glheader.h)
 set(SOURCE_FILES
 	Model.cpp
+	Model001.cpp
+	Model002.cpp
+	Model003.cpp
     Scene.cpp
     Shader.cpp
     stb_image.cpp
@@ -15,7 +18,8 @@ set(SOURCE_FILES
 set(RESOURCE_FILES)
 set(THIRD_DEPENDS)
 set(INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/include
-                 ${CMAKE_SOURCE_DIR}/dependencies/imgui)
+                 ${CMAKE_SOURCE_DIR}/dependencies/imgui
+                 ${CMAKE_SOURCE_DIR}/dependencies/glm-0.9.8.5/)
 set(THIRD_DEPEND_DIRS)
 set(THIRD_DEPEND_BINS)
 set(BINARY_OUPUT_DIR)

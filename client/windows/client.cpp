@@ -5,6 +5,7 @@
 #include "backends/imgui_impl_win32.h"
 #include "backends/imgui_impl_opengl3.h"
 #include "imgui.h"
+#include "imconfig.h"
 #include "client.h"
 #include "framework.h"
 #include "../glheader.h"
@@ -78,6 +79,7 @@ void initImGui(HWND hWnd)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("H:\\GitLab\\GameEngine\\dependencies\\imgui\\misc\\fonts\\fonttitle02.ttf", 14.0f, nullptr, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplWin32_EnableDpiAwareness();

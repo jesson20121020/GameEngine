@@ -10,7 +10,12 @@
 #include "glheader.h"
 #include "stb_image.h"
 #include <vector>
+#include "imgui.h"
 #include "Model.h"
+#include "Model001.h"
+#include "Model002.h"
+#include "Model003.h"
+
 
 std::vector<Model*> modelCache;
 
@@ -278,26 +283,40 @@ void Init(float width, float height) {
   gluPerspective(50.0f, width / height, 0.1f, 1000.0f);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  auto model = new Model();
-  modelCache.push_back(model);
+  modelCache.push_back(new Model001());
+  modelCache.push_back(new Model002());
+  modelCache.push_back(new Model003());
 }
 
 void Renderer() {
-    //Test_Init_DrawTriangle();
-    //Test_LoadTexture();
-    //Test();
 	for(auto iter = modelCache.begin(); iter != modelCache.end(); iter++)
 	{
-		(*iter)->render();
+        if ((*iter)->isVisible())
+		    (*iter)->render();
 	}
 }
 
 
 void RenderImGui()
 {
+    static int select = 0;
+    ImGui::Begin("OpenGL示例选择");
+    int idx = 0;
+    for (auto iter = modelCache.begin(); iter != modelCache.end(); iter++, idx++)
+    {
+        ImGui::RadioButton((*iter)->getModelName().c_str(), &select, idx);
+    }
+    idx = 0;
+    for (auto iter = modelCache.begin(); iter != modelCache.end(); iter++, idx++)
+    {
+        (*iter)->setVisible(idx == select);
+    }
+    ImGui::End();
+
     for (auto iter = modelCache.begin(); iter != modelCache.end(); iter++)
     {
-        (*iter)->renderImGui();
+        if ((*iter)->hasInit() && (*iter)->isVisible())
+            (*iter)->renderImGui();
     }
 }
 

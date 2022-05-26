@@ -103,7 +103,8 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
           uniform = new SampleUniform(name, type, texCnt);
           texCnt += 1;
       }
-      _uniforms.push_back(uniform);
+      if (uniform != nullptr)
+         _uniforms.push_back(uniform);
   }
  }
 
@@ -121,8 +122,14 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
   }
 
+  void Shader::setMat4(const std::string& name, glm::mat4 trans) const {
+      glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(trans));
+  }
+
   void Shader::drawImGui() 
   {
+      if (_uniforms.size() == 0)
+          return;
 	  ImGui::Begin("Shader uniform");
 	  for(auto iter = _uniforms.begin(); iter != _uniforms.end(); iter++)
 	  {
