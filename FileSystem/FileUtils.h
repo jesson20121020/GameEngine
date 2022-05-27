@@ -20,7 +20,6 @@ public:
 	virtual std::string getFullFilePath(const std::string& fileName) const;
 	virtual bool writeStringToFile(std::string dataStr, const std::string& filePath) const;
 	bool isFileExist(const std::string& filePath) const;
-	virtual bool isFileExistInternal(const std::string& filePath) const = 0;
 	virtual bool isAbsolutePath(const std::string& filePath) const;
 	virtual bool createDirectory(const std::string& dirPath);
 	virtual bool removeDirectory(const std::string& dirPath);
@@ -28,6 +27,7 @@ public:
 	virtual bool renameFile(const std::string& filePath, const std::string& newFilePath);
 	virtual long getFileSize(const std::string& filePath);
 protected:
+	virtual bool isFileExistInternal(const std::string& filePath) const = 0;
 	FileUtils();
 
 	std::vector<std::string> _searchPaths;
