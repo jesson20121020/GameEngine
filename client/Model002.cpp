@@ -3,6 +3,7 @@
 #include "glheader.h"
 #include "imgui.h"
 #include "stb_image.h"
+#include "FileUtils.h"
 
 Model002::Model002(){
     _modelName = "入门-纹理";
@@ -67,7 +68,7 @@ void Model002::init() {
   // find files on any IDE/platform; replace it with your own image path.
   stbi_set_flip_vertically_on_load(true);
   unsigned char *data =
-      stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test2.jpg", &width,
+      stbi_load(FileUtils::getInstance()->getFullFilePath("test2.jpg").c_str(), &width,
                 &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
@@ -97,7 +98,7 @@ void Model002::init() {
   // The FileSystem::getPath(...) is part of the GitHub repository so we can
   // find files on any IDE/platform; replace it with your own image path.
   stbi_set_flip_vertically_on_load(true);
-  data = stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test.jpg", &width,
+  data = stbi_load(FileUtils::getInstance()->getFullFilePath("test.jpg").c_str(), &width,
                    &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
@@ -118,8 +119,8 @@ void Model002::init() {
   glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, _texture1);
 
-  _shader = new Shader("H:\\GitLab\\GameEngine\\client\\res\\test002.vs",
-                       "H:\\GitLab\\GameEngine\\client\\res\\test002.ps");
+  _shader = new Shader("test002.vs",
+                       "test002.ps");
   _shader->use();
   _shader->setInt("texture1", 0);
   _shader->setInt("texture2", 1);

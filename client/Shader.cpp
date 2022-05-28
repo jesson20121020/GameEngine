@@ -1,9 +1,14 @@
 #include "Shader.h"
 #include "glheader.h"
 #include "imgui.h"
+#include "FileUtils.h"
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath) {
-  // 1. 从文件路径读取顶点、片段着色器代码
+
+   auto vsPath = FileUtils::getInstance()->getFullFilePath(vertexPath);
+   auto fsPath = FileUtils::getInstance()->getFullFilePath(fragmentPath);
+
+   // 1. 从文件路径读取顶点、片段着色器代码
   std::string vertexCode;
   std::string fragmentCode;
   std::ifstream vShaderFile;
@@ -14,8 +19,8 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
 
   try {
     //打开文件
-    vShaderFile.open(vertexPath);
-    fShaderFile.open(fragmentPath);
+    vShaderFile.open(vsPath.c_str());
+    fShaderFile.open(fsPath.c_str());
     std::stringstream vShaderStream, fShaderStream;
 
     // 读取文件缓冲区内容到数据流中

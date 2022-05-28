@@ -18,16 +18,19 @@ public:
 
 	virtual std::string getStringFromFile(const std::string& fileName);
 	virtual std::string getFullFilePath(const std::string& fileName) const;
-	virtual bool writeStringToFile(std::string dataStr, const std::string& filePath) const;
 	bool isFileExist(const std::string& filePath) const;
+	virtual long getFileSize(const std::string& filePath);
 	virtual bool isAbsolutePath(const std::string& filePath) const;
+
+	/*virtual bool writeStringToFile(std::string dataStr, const std::string& filePath) const;
 	virtual bool createDirectory(const std::string& dirPath);
 	virtual bool removeDirectory(const std::string& dirPath);
 	virtual bool removeFile(const std::string& filePath);
-	virtual bool renameFile(const std::string& filePath, const std::string& newFilePath);
-	virtual long getFileSize(const std::string& filePath);
+	virtual bool renameFile(const std::string& filePath, const std::string& newFilePath);*/
+	
 protected:
 	virtual bool isFileExistInternal(const std::string& filePath) const = 0;
+	virtual std::string convertToPlatformPath(const std::string& filePath) const;
 	FileUtils();
 
 	std::vector<std::string> _searchPaths;

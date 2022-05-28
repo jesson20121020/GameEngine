@@ -39,8 +39,8 @@ void Model001::init() {
   // call to glBindVertexArray anyways so we generally don't unbind VAOs (nor
   // VBOs) when it's not directly necessary.
   glBindVertexArray(0);
-  _shader = new Shader("G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.vs",
-      "G:\\Projects\\GitLab\\GameEngine\\client\\res\\test001.ps");
+  _shader = new Shader("test001.vs",
+      "test001.ps");
   _shader->use();
 }
 

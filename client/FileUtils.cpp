@@ -2,6 +2,10 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <string>
+#include <regex>
+
+FileUtils* FileUtils::s_sharedFileUtils = nullptr;
 
 FileUtils::FileUtils() : _defaultSearchPath("") {}
 
@@ -70,7 +74,7 @@ std::string FileUtils::getFullFilePath(const std::string &fileName) const {
   if (fileName.empty())
     return "";
 
-  if (!isAbsolutePath(fileName))
+  if (isAbsolutePath(fileName))
     return fileName;
 
   // TODO: need use cache optimize
@@ -80,12 +84,13 @@ std::string FileUtils::getFullFilePath(const std::string &fileName) const {
 
   size_t pos = fileName.rfind('/');
   if (pos != std::string::npos) {
-    filePath = fileName.substr(0, pos - 1);
+    filePath = fileName.substr(0, pos);
     file = fileName.substr(pos + 1);
   }
 
   for (const auto &searchPath : _searchPaths) {
     fullPath = searchPath + filePath + file;
+    fullPath = convertToPlatformPath(fullPath);
     if (isFileExistInternal(fullPath))
       return fullPath;
   }
@@ -104,3 +109,8 @@ bool FileUtils::isAbsolutePath(const std::string &filePath) const {
 }
 
 long FileUtils::getFileSize(const std::string &filePath) { return 0; }
+
+std::string FileUtils::convertToPlatformPath(const std::string& filePath) const
+{
+    return filePath;
+}

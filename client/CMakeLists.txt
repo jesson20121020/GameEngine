@@ -1,6 +1,6 @@
 set(TARGET client)
 set(PLATFORM "")
-set(HEADER_FILES Scene.h Shader.h glheader.h)
+set(HEADER_FILES Scene.h Shader.h glheader.h FileUtils.h)
 set(SOURCE_FILES
 	Model.cpp
 	Model001.cpp
@@ -9,6 +9,7 @@ set(SOURCE_FILES
     Scene.cpp
     Shader.cpp
     stb_image.cpp
+	FileUtils.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_draw.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_tables.cpp
@@ -32,9 +33,10 @@ elseif(PLATFORM_WINDOWS)
   set(PLATFORM WIN32)
   set(CMAKE_BUILD_TYPE Debug)
   list(APPEND HEADER_FILES windows/client.h windows/framework.h
-       windows/Resource.h windows/targetver.h)
+	  windows/Resource.h windows/targetver.h windows/FileUtils-Win.h)
   list(APPEND SOURCE_FILES windows/client.cpp)
   list(APPEND SOURCE_FILES
+	  windows/FileUtils-Win.cpp
        ${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_win32.cpp)
   list(APPEND RESOURCE_FILES windows/client.rc windows/client.ico
        windows/small.ico)

@@ -10,6 +10,7 @@
 #include "framework.h"
 #include "../glheader.h"
 #include <iostream>
+#include "../FileUtils.h"
 
 #define MAX_LOADSTRING 100
 
@@ -117,6 +118,28 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
   LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
   LoadStringW(hInstance, IDC_CLIENT, szWindowClass, MAX_LOADSTRING);
   MyRegisterClass(hInstance);
+
+  char  szPath[MAX_PATH];
+  PSTR  lpFilename;
+
+  // Retrieve the full path for the current module.
+  if (GetModuleFileName(NULL, szPath, sizeof szPath) == 0)
+      return -1;
+
+  // Get a pointer to the filename part of
+  // the string containing the full path. 
+  lpFilename = (strrchr(szPath, '\\') + 1);
+
+  std::string exePath = szPath;
+  std::string exeDir = "";
+  std::string exeName = "";
+  size_t pos = exePath.rfind('\\');
+  if (pos != std::string::npos) {
+      exeDir = exePath.substr(0, pos);
+      exeName = exePath.substr(pos + 1);
+  }
+
+  FileUtils::getInstance()->addSearchPath(exeDir, true);
 
   // 执行应用程序初始化:
   if (!InitInstance(hInstance, nCmdShow)) {

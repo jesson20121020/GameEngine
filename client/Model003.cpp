@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "FileUtils.h"
 
 Model003::Model003() {
 	_modelName = "入门-变换";
@@ -70,8 +71,8 @@ void Model003::init() {
   // find files on any IDE/platform; replace it with your own image path.
   stbi_set_flip_vertically_on_load(true);
   unsigned char *data =
-      stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test2.jpg", &width,
-                &height, &nrChannel, 0);
+      stbi_load(FileUtils::getInstance()->getFullFilePath("test2.jpg").c_str(), &width,
+          &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, data);
@@ -100,8 +101,8 @@ void Model003::init() {
   // The FileSystem::getPath(...) is part of the GitHub repository so we can
   // find files on any IDE/platform; replace it with your own image path.
   stbi_set_flip_vertically_on_load(true);
-  data = stbi_load("H:\\GitLab\\GameEngine\\client\\res\\test.jpg", &width,
-                   &height, &nrChannel, 0);
+  data = stbi_load(FileUtils::getInstance()->getFullFilePath("test.jpg").c_str(), &width,
+      &height, &nrChannel, 0);
   if (data) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
                  GL_UNSIGNED_BYTE, data);
@@ -121,8 +122,8 @@ void Model003::init() {
   glActiveTexture(GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, _texture1);
 
-  _shader = new Shader("H:\\GitLab\\GameEngine\\client\\res\\test003.vs",
-                       "H:\\GitLab\\GameEngine\\client\\res\\test003.ps");
+  _shader = new Shader("test003.vs",
+                       "test003.ps");
   _shader->use();
   _shader->setInt("texture1", 0);
   _shader->setInt("texture2", 1);
