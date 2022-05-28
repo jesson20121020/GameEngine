@@ -11,6 +11,7 @@
 #include "backends/imgui_impl_opengl3.h"
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#include "FileUtils-Mac.h"
 
 
 static bool g_mousePressed[2] = { false, false };
@@ -24,6 +25,18 @@ static OGLView* sOGLView;
         sOGLView = [OGLView alloc];
     }
     return sOGLView;
+}
+
+-(void) initImGui
+{
+    // Init imgui
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF(FileUtils::getInstance()->getFullFilePath("fonttitle02.ttf").c_str(), 14.0f, nullptr, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    ImGui_ImplOSX_Init(self);
+    ImGui::StyleColorsDark();
+    ImGui_ImplOpenGL3_Init("#version 410");
 }
 
 -(void)initWithRect:(CGRect)rect{
@@ -43,18 +56,18 @@ static OGLView* sOGLView;
     [NSTimer scheduledTimerWithTimeInterval:0.016f target:self selector:@selector(UpdateScene) userInfo:nil repeats:YES];
     
     NSLog(@"%s", glGetString(GL_VERSION));
+
+    NSURL *appFolder = [[[NSBundle mainBundle] bundleURL] URLByDeletingLastPathComponent];
+
+    FileUtils::getInstance()->addSearchPath("/Users/jesson/Documents/GameEngine/client/res", true);
+
     
-    // Init imgui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui_ImplOSX_Init(self);
-    ImGui::StyleColorsDark();
-    ImGui_ImplOpenGL3_Init("#version 410");
     
+    [self initImGui];
     // Init OpenGL scene
     Init(rect.size.width, rect.size.height);
 }
+
 
 -(void)UpdateScene{
     [self setNeedsDisplay:YES];
@@ -68,7 +81,9 @@ static OGLView* sOGLView;
     if (ImGui::GetCurrentContext()) {
       ImGui::NewFrame();
 
-      ImGui::ShowDemoWindow();
+	  RenderImGui();
+
+      // ImGui::ShowDemoWindow();
 
       ImGui::Render();
     }

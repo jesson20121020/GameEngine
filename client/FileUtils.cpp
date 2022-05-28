@@ -4,6 +4,8 @@
 #include <sstream>
 #include <string>
 #include <regex>
+#include <sys/stat.h>
+
 
 FileUtils* FileUtils::s_sharedFileUtils = nullptr;
 
@@ -105,12 +107,27 @@ bool FileUtils::isFileExist(const std::string &filePath) const {
 }
 
 bool FileUtils::isAbsolutePath(const std::string &filePath) const {
-  return !filePath.empty() && filePath[0] != '/';
+  return !filePath.empty() && filePath[0] == '/';
 }
 
-long FileUtils::getFileSize(const std::string &filePath) { return 0; }
+long FileUtils::getFileSize(const std::string &filePath) { 
+	std::string path = getFullFilePath(filePath);
+	if (path.empty())
+		return 0;
+	struct stat info;
+	int result = stat(path.c_str(), &info);
+	if (result != 0)
+		return -1;
+	return (long)info.st_size;
+}
 
 std::string FileUtils::convertToPlatformPath(const std::string& filePath) const
 {
-    return filePath;
+    std::string path = filePath;
+    for (int i = 0; i < path.size(); i++) {
+        if (path[i] == '\\') {
+            path[i] = '/';
+        }
+    }
+    return path;
 }

@@ -25,6 +25,7 @@ set(THIRD_DEPEND_DIRS)
 set(THIRD_DEPEND_BINS)
 set(BINARY_OUPUT_DIR)
 set(FRAMEWORK_FILES)
+set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/client/res)
 
 if(PLATFORM_IOS)
   message("todo")
@@ -45,14 +46,13 @@ elseif(PLATFORM_WINDOWS)
        ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/lib/Release/x64)
   list(APPEND THIRD_DEPEND_BINS
        ${PROJECT_SOURCE_DIR}/dependencies/glew-2.1.0/bin/Release/x64/)
-  list(APPEND THIRD_DEPEND_BINS ${PROJECT_SOURCE_DIR}/client/res)
   set(BINARY_OUPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE})
 elseif(PLATFORM_OSX)
   set(PLATFORM MACOSX_BUNDLE)
   set(CMAKE_BUILD_TYPE Debug)
   # 添加Framework
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework AppKit")
-  list(APPEND HEADER_FILES mac/OGLView.h mac/OGLMainWindow.h mac/AppDelegate.h)
+  list(APPEND HEADER_FILES mac/OGLView.h mac/OGLMainWindow.h mac/AppDelegate.h mac/FileUtils-Mac.h)
   list(
     APPEND
     SOURCE_FILES
@@ -60,6 +60,7 @@ elseif(PLATFORM_OSX)
     mac/AppDelegate.mm
     mac/OGLView.mm
     mac/OGLMainWindow.mm
+	mac/FileUtils-Mac.mm
     mac/client.entitlements
 	${PROJECT_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_osx.mm)
   list(APPEND RESOURCE_FILES mac/Assets.xcassets)
@@ -73,8 +74,8 @@ elseif(PLATFORM_OSX)
   )
 
   # 设置需要放到Resources目录下的资源
-  set_source_files_properties(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION
-                                                      Resources)
+  # set_source_files_properties(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION
+  #                                                   Resources)
 
   message(${CMAKE_CURRENT_BINARY_DIR})
   file(GLOB FRAMEWORK_FILES
@@ -86,6 +87,16 @@ elseif(PLATFORM_OSX)
                                                         "CodeSignOnCopy")
   endforeach()
 
+  file(GLOB RES_FILES res/*)
+  foreach(filename ${RES_FILES})
+	  list(APPEND RESOURCE_FILES ${filename})
+  endforeach()
+
+  file(GLOB  RES_FILES ${RESOURCE_FILES})
+   foreach(filename ${RES_FILES})
+       message(${filename})
+       set_source_files_properties(${filename} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  endforeach()
 endif()
 
 include_directories(${INCLUDE_DIRS})
@@ -100,6 +111,7 @@ if(FRAMEWORK_FILES)
     ${TARGET} PROPERTIES XCODE_ATTRIBUTE_LD_RUNPATH_SEARCH_PATHS
                          "@executable_path/Frameworks")
 endif()
+
 
 if(PLATFORM_WINDOWS)
   target_link_libraries(${TARGET} ${THIRD_DEPENDS})
