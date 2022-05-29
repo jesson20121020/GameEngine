@@ -17,7 +17,7 @@
     cmaek -G "Xcode" -B build/mac .
 ```
 ```bash
-cd build/mac/GameEngine.xcodeproject
+cd build/mac/GameEngine.xcodeproj
 xcodebuild clean
 xcodebuild -workspace project.xcworkspace -scheme client -configuration Release | tee xcodebuild.log | xcpretty --report json-compilation-database --output compile_commands.json
 ```

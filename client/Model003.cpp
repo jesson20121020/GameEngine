@@ -10,6 +10,12 @@
 
 Model003::Model003() {
 	_modelName = "入门-变换";
+	for(int i = 0; i < 2; i++)
+	{
+		_scale[i] = 1.0f;
+		_pos[i] = 0.0f;
+		_rotate[i] = 0.0f;
+	}
 }
 
 void Model003::init() {
@@ -129,11 +135,28 @@ void Model003::init() {
   _shader->setInt("texture2", 1);
 
   glm::mat4 trans;
-  trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0, 0, 1));
+  trans = glm::rotate(trans, glm::radians(45.0f), glm::vec3(0, 0, 1));
   trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0));
   _shader->setMat4("transform", trans);
 }
 
 void Model003::draw() { glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); }
+
+
+void Model003::renderImGui()
+{
+	Model::renderImGui();
+	ImGui::Begin("旋转缩放调整");
+  ImGui::SliderFloat2("平移", _pos, -1, 1, "%.2f", 0);
+  ImGui::SliderFloat2("旋转", _rotate, 0, 360, "%.2f", 0);
+  ImGui::SliderFloat2("缩放", _scale, 0, 10, "%.2f");
+  ImGui::End();
+  glm::mat4 trans;
+  trans = glm::rotate(trans, glm::radians(_rotate[0]), glm::vec3(0, 0, 1));
+  trans = glm::rotate(trans, glm::radians(_rotate[1]), glm::vec3(1, 0, 0));
+  trans = glm::scale(trans, glm::vec3(_scale[0], _scale[1], 0));
+  trans = glm::translate(trans, glm::vec3(_pos[0], _pos[1], 0));
+  _shader->setMat4("transform", trans);
+}
 
 void Model003::destroy() {}

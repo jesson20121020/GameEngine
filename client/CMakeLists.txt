@@ -6,6 +6,7 @@ set(SOURCE_FILES
 	Model001.cpp
 	Model002.cpp
 	Model003.cpp
+	Model004.cpp
     Scene.cpp
     Shader.cpp
     stb_image.cpp

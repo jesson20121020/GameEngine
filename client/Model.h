@@ -9,7 +9,7 @@ public:
 	void setVisible(bool val);
 	bool isVisible() { return _visible; }
 	void render();
-	void renderImGui();
+	virtual void renderImGui();
 	std::string getModelName() {return _modelName; }
 	Shader* getShader() { return _shader; }
 	inline bool hasInit() { return _hasInit; }

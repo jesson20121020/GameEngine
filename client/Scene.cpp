@@ -15,6 +15,7 @@
 #include "Model001.h"
 #include "Model002.h"
 #include "Model003.h"
+#include "Model004.h"
 
 
 std::vector<Model*> modelCache;
@@ -283,9 +284,11 @@ void Init(float width, float height) {
   gluPerspective(50.0f, width / height, 0.1f, 1000.0f);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  glEnable(GL_DEPTH_TEST);
   modelCache.push_back(new Model001());
   modelCache.push_back(new Model002());
   modelCache.push_back(new Model003());
+  modelCache.push_back(new Model004());
 }
 
 void Renderer() {
