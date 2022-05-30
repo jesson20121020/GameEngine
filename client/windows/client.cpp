@@ -80,7 +80,7 @@ void initImGui(HWND hWnd)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("H:\\GitLab\\GameEngine\\dependencies\\imgui\\misc\\fonts\\fonttitle02.ttf", 14.0f, nullptr, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    io.Fonts->AddFontFromFileTTF(FileUtils::getInstance()->getFullFilePath("fonttitle02.ttf").c_str(), 14.0f, nullptr, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplWin32_EnableDpiAwareness();
@@ -139,7 +139,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
       exeName = exePath.substr(pos + 1);
   }
 
-  FileUtils::getInstance()->addSearchPath(exeDir, true);
+  FileUtils::getInstance()->addSearchPath(exeDir + "/Resources", true);
 
   // 执行应用程序初始化:
   if (!InitInstance(hInstance, nCmdShow)) {

@@ -28,6 +28,14 @@ set(BINARY_OUPUT_DIR)
 set(FRAMEWORK_FILES)
 set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/client/res)
 
+
+file(GLOB RES_FILES res/*)
+foreach(filename ${RES_FILES})
+  list(APPEND RESOURCE_FILES ${filename})
+endforeach()
+
+message(${CMAKE_CURRENT_BINARY_DIR})
+
 if(PLATFORM_IOS)
   message("todo")
 
@@ -78,7 +86,6 @@ elseif(PLATFORM_OSX)
   # set_source_files_properties(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION
   #                                                   Resources)
 
-  message(${CMAKE_CURRENT_BINARY_DIR})
   file(GLOB FRAMEWORK_FILES
        ${PROJECT_SOURCE_DIR}/dependencies/glew-2.2.0/lib/mac/*.dylib)
   foreach(framework ${FRAMEWORK_FILES})
@@ -88,10 +95,6 @@ elseif(PLATFORM_OSX)
                                                         "CodeSignOnCopy")
   endforeach()
 
-  file(GLOB RES_FILES res/*)
-  foreach(filename ${RES_FILES})
-	  list(APPEND RESOURCE_FILES ${filename})
-  endforeach()
 
   file(GLOB  RES_FILES ${RESOURCE_FILES})
    foreach(filename ${RES_FILES})
@@ -121,6 +124,11 @@ if(PLATFORM_WINDOWS)
     POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${THIRD_DEPEND_BINS}
             ${BINARY_OUPUT_DIR})
+  add_custom_command(
+    TARGET ${TARGET}
+    POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/client/res
+	${BINARY_OUPUT_DIR}/Resources)
 elseif(PLATFORM_OSX)
 	target_link_libraries(${TARGET} ${THIRD_DEPENDS} "-framework OpenGL -framework GameController")
   # NOTE: 通过install_name_tool解决dylib not found的问题
