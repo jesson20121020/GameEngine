@@ -6,7 +6,7 @@
 #include "stb_image.h"
 
 Model005::Model005() {
-  _modelName = "入门-坐标系统 ";
+  _modelName = "入门-摄像机 ";
   _fov = 45.0f;
   _camera = new Camera();
   for (int i = 0; i < 3; i++) {
@@ -158,7 +158,7 @@ void Model005::draw() {
 
 void Model005::renderImGui() {
   Model::renderImGui();
-  ImGui::Begin("坐标系统");
+  ImGui::Begin("摄像机");
   ImGui::SliderFloat3("Model旋转", _modelRotate, 0, 360, "%.2f", 0);
   ImGui::SliderFloat2("View平移", _viewPos, -1, 1, "%.2f", 0);
   ImGui::SliderFloat("Fov", &_fov, 10, 120, "%.2f");
