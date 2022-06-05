@@ -2,32 +2,34 @@ set(TARGET client)
 set(PLATFORM "")
 set(HEADER_FILES Scene.h Shader.h glheader.h FileUtils.h)
 set(SOURCE_FILES
-	Model.cpp
-	Model001.cpp
-	Model002.cpp
-	Model003.cpp
-	Model004.cpp
+    Model.cpp
+    Model001.cpp
+    Model002.cpp
+    Model003.cpp
+    Model004.cpp
+    Model005.cpp
+    Camera.cpp
     Scene.cpp
     Shader.cpp
     stb_image.cpp
-	FileUtils.cpp
+    FileUtils.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_draw.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_tables.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_widgets.cpp
     ${CMAKE_SOURCE_DIR}/dependencies/imgui/imgui_demo.cpp
-	${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_opengl3.cpp)
+    ${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_opengl3.cpp)
 set(RESOURCE_FILES)
 set(THIRD_DEPENDS)
-set(INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/include
-                 ${CMAKE_SOURCE_DIR}/dependencies/imgui
-                 ${CMAKE_SOURCE_DIR}/dependencies/glm-0.9.8.5/)
+set(INCLUDE_DIRS
+    ${CMAKE_SOURCE_DIR}/dependencies/glew-2.1.0/include
+    ${CMAKE_SOURCE_DIR}/dependencies/imgui
+    ${CMAKE_SOURCE_DIR}/dependencies/glm-0.9.8.5/)
 set(THIRD_DEPEND_DIRS)
 set(THIRD_DEPEND_BINS)
 set(BINARY_OUPUT_DIR)
 set(FRAMEWORK_FILES)
 set(RESOURCE_DIR ${CMAKE_SOURCE_DIR}/client/res)
-
 
 file(GLOB RES_FILES res/*)
 foreach(filename ${RES_FILES})
@@ -42,11 +44,16 @@ if(PLATFORM_IOS)
 elseif(PLATFORM_WINDOWS)
   set(PLATFORM WIN32)
   set(CMAKE_BUILD_TYPE Debug)
-  list(APPEND HEADER_FILES windows/client.h windows/framework.h
-	  windows/Resource.h windows/targetver.h windows/FileUtils-Win.h)
+  list(
+    APPEND
+    HEADER_FILES
+    windows/client.h
+    windows/framework.h
+    windows/Resource.h
+    windows/targetver.h
+    windows/FileUtils-Win.h)
   list(APPEND SOURCE_FILES windows/client.cpp)
-  list(APPEND SOURCE_FILES
-	  windows/FileUtils-Win.cpp
+  list(APPEND SOURCE_FILES windows/FileUtils-Win.cpp
        ${CMAKE_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_win32.cpp)
   list(APPEND RESOURCE_FILES windows/client.rc windows/client.ico
        windows/small.ico)
@@ -61,7 +68,8 @@ elseif(PLATFORM_OSX)
   set(CMAKE_BUILD_TYPE Debug)
   # 添加Framework
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework AppKit")
-  list(APPEND HEADER_FILES mac/OGLView.h mac/OGLMainWindow.h mac/AppDelegate.h mac/FileUtils-Mac.h)
+  list(APPEND HEADER_FILES mac/OGLView.h mac/OGLMainWindow.h mac/AppDelegate.h
+       mac/FileUtils-Mac.h)
   list(
     APPEND
     SOURCE_FILES
@@ -69,9 +77,9 @@ elseif(PLATFORM_OSX)
     mac/AppDelegate.mm
     mac/OGLView.mm
     mac/OGLMainWindow.mm
-	mac/FileUtils-Mac.mm
+    mac/FileUtils-Mac.mm
     mac/client.entitlements
-	${PROJECT_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_osx.mm)
+    ${PROJECT_SOURCE_DIR}/dependencies/imgui/backends/imgui_impl_osx.mm)
   list(APPEND RESOURCE_FILES mac/Assets.xcassets)
   list(APPEND THIRD_DEPENDS libGLEW.a)
   list(APPEND THIRD_DEPEND_DIRS
@@ -82,9 +90,8 @@ elseif(PLATFORM_OSX)
       ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE}/game.app/Contents/MacOS
   )
 
-  # 设置需要放到Resources目录下的资源
-  # set_source_files_properties(${RESOURCES} PROPERTIES MACOSX_PACKAGE_LOCATION
-  #                                                   Resources)
+  # 设置需要放到Resources目录下的资源 set_source_files_properties(${RESOURCES} PROPERTIES
+  # MACOSX_PACKAGE_LOCATION Resources)
 
   file(GLOB FRAMEWORK_FILES
        ${PROJECT_SOURCE_DIR}/dependencies/glew-2.2.0/lib/mac/*.dylib)
@@ -95,11 +102,11 @@ elseif(PLATFORM_OSX)
                                                         "CodeSignOnCopy")
   endforeach()
 
-
-  file(GLOB  RES_FILES ${RESOURCE_FILES})
-   foreach(filename ${RES_FILES})
-       message(${filename})
-       set_source_files_properties(${filename} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+  file(GLOB RES_FILES ${RESOURCE_FILES})
+  foreach(filename ${RES_FILES})
+    message(${filename})
+    set_source_files_properties(${filename} PROPERTIES MACOSX_PACKAGE_LOCATION
+                                                       Resources)
   endforeach()
 endif()
 
@@ -116,7 +123,6 @@ if(FRAMEWORK_FILES)
                          "@executable_path/Frameworks")
 endif()
 
-
 if(PLATFORM_WINDOWS)
   target_link_libraries(${TARGET} ${THIRD_DEPENDS})
   add_custom_command(
@@ -127,10 +133,11 @@ if(PLATFORM_WINDOWS)
   add_custom_command(
     TARGET ${TARGET}
     POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/client/res
-	${BINARY_OUPUT_DIR}/Resources)
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${PROJECT_SOURCE_DIR}/client/res
+            ${BINARY_OUPUT_DIR}/Resources)
 elseif(PLATFORM_OSX)
-	target_link_libraries(${TARGET} ${THIRD_DEPENDS} "-framework OpenGL -framework GameController")
+  target_link_libraries(${TARGET} ${THIRD_DEPENDS}
+                        "-framework OpenGL -framework GameController")
   # NOTE: 通过install_name_tool解决dylib not found的问题
   add_custom_command(
     TARGET ${TARGET}

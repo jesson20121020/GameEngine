@@ -16,6 +16,7 @@
 #include "Model002.h"
 #include "Model003.h"
 #include "Model004.h"
+#include "Model005.h"
 
 
 std::vector<Model*> modelCache;
@@ -289,6 +290,7 @@ void Init(float width, float height) {
   modelCache.push_back(new Model002());
   modelCache.push_back(new Model003());
   modelCache.push_back(new Model004());
+  modelCache.push_back(new Model005());
 }
 
 void Renderer() {
