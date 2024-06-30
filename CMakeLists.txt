@@ -1,19 +1,34 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.19 FATAL_ERROR)
 
-# 导出与平台无关的通用设置
-message("开始导入平台无关通用配置")
-include(cmake/common.cmake)
-# 导入平台相关设置
-message("开始导入平台相关配置")
-include(cmake/platform.cmake)
+# use common cmake
+include(3rdparty/cmake/common.cmake)
+include(3rdparty/cmake/utils.cmake)
+include(3rdparty/cmake/platform.cmake)
 
-# 设置工程名称
-project(GameEngine)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-# 以下添加子工程
-add_subdirectory(client)
+# include(CMakeDependentOption)
 
+set(PYTHON_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(CMAKE_INSTALL_PREFIX "${PYTHON_ROOT_DIR}/bin")
+set(BINARY_ROOT_DIR "${CMAKE_INSTALL_PREFIX}/")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_ROOT_DIR})
+
+
+add_subdirectory(3rdparty/glfw)
+include(3rdparty/imgui/imgui_lib.cmake)
+add_subdirectory(runtime/client)
+
+project(GameEngine VERSION 1.0.0)
+
+# #[[ add_subdirectory(zlib)
+# include(python/python_lib.cmake)
+# include(python/python_exe.cmake)
+# add_subdirectory(glfw)
+# add_subdirectory(imgui)
+# add_subdirectory(imgui_zmo)
+# add_subdirectory(implot)
+# # add_subdirectory(pyimgui)
+# add_subdirectory(imgui_node_editor) ]]
